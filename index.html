@@ -1447,12 +1447,6 @@ section {
   font-size: 16px;
 }
 
-.contact-link:nth-child(3) .contact-link-icon::before {
-  content: '◆';
-  font-size: 14px;
-  color: var(--accent);
-}
-
 .contact-link-text {
   white-space: nowrap;
 }
@@ -2800,7 +2794,8 @@ a.text-link:hover {
             class="contact-link"
             aria-label="Enviar email"
           >
-            <span class="contact-link-icon" aria-hidden="true"></span>
+            <span class="contact-link-icon" aria-hidden="true">
+            </span>
             <span class="contact-link-text">Email</span>
           </a>
 
@@ -2824,7 +2819,9 @@ a.text-link:hover {
             rel="noopener noreferrer"
             aria-label="Web de CuerdOS"
           >
-            <span class="contact-link-icon" aria-hidden="true"></span>
+            <span class="contact-link-icon" aria-hidden="true">
+              <img src="images/cuerdos-logo.png" alt="" width="24" height="24">
+            </span>
             <span class="contact-link-text">CuerdOS</span>
           </a>
 
