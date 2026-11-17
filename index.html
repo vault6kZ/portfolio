@@ -10,2092 +10,206 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-/* ============================================
-   Pablo G. Alba - PORTFOLIO CSS
-   Design Master Document v2.0 Implementation
-   ============================================ */
-
-/* ============================================
-   1. CSS CUSTOM PROPERTIES (DESIGN TOKENS)
-   ============================================ */
-:root {
-  /* Color Palette */
-  --bg-primary: #0F172A;
-  --bg-card: #1E293B;
-  --bg-secondary: #111827;
-  --bg-terminal: #0D1117;
-  
-  --accent: #84CC16;
-  --accent-hover: #9ae020;
-  --accent-subtle: rgba(132, 204, 22, 0.1);
-  --accent-glow: rgba(132, 204, 22, 0.15);
-  --accent-glow-strong: rgba(132, 204, 22, 0.25);
-  
-  --text-primary: #E2E8F0;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  
-  /* Grid Pattern */
-  --grid-color: rgba(255, 255, 255, 0.03);
-  --grid-accent-color: rgba(132, 204, 22, 0.05);
-  
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  
-  /* Spacing Scale */
-  --space-4: 4px;
-  --space-6: 6px;
-  --space-8: 8px;
-  --space-10: 10px;
-  --space-12: 12px;
-  --space-14: 14px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-28: 28px;
-  --space-32: 32px;
-  --space-40: 40px;
-  --space-48: 48px;
-  --space-64: 64px;
-  --space-96: 96px;
-  --space-128: 128px;
-  
-  /* Layout */
-  --max-width: 1200px;
-  --nav-height: 64px;
-  
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 16px;
-  
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 200ms ease;
-  --transition-slow: 250ms ease;
-  
-  /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--border-subtle);
-  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.35);
-  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-hover), 0 0 60px -10px var(--accent-glow);
-  --shadow-glow-sm: 0 0 20px -5px var(--accent-glow);
-  --shadow-glow-md: 0 0 40px -10px var(--accent-glow);
-}
-
-/* ============================================
-   2. RESET & BASE STYLES
-   ============================================ */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-body {
-  font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.65;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: relative;
-}
-
-/* ============================================
-   2.5 BACKGROUND EFFECTS (Grid + Ambient)
-   ============================================ */
-
-/* Grid pattern overlay */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.8;
-}
-
-/* Ambient glow effect - subtle green light from top-right */
-body::after {
-  content: '';
-  position: fixed;
-  top: -50%;
-  right: -30%;
-  width: 80%;
-  height: 100%;
-  background: radial-gradient(
-    ellipse at center,
-    var(--accent-glow-strong) 0%,
-    rgba(132, 204, 22, 0.08) 30%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Ensure content sits above background effects */
-#main-nav,
-#main-content,
-.nav-overlay,
-footer {
-  position: relative;
-  z-index: 1;
-}
-
-#main-content {
-  flex: 1;
-}
-
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--text-primary);
-}
-
-p {
-  margin-bottom: var(--space-16);
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-strong {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* ============================================
-   3. ACCESSIBILITY UTILITIES
-   ============================================ */
-
-/* Screen reader only */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Skip link */
-.skip-link {
-  position: fixed;
-  top: -100%;
-  left: var(--space-16);
-  z-index: 9999;
-  padding: var(--space-12) var(--space-24);
-  background: var(--accent);
-  color: var(--bg-primary);
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  transition: top var(--transition-fast);
-}
-
-.skip-link:focus {
-  top: var(--space-16);
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* Focus styles */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  
-  /* Ensure animated elements are visible without animation */
-  .fade-in,
-  .fade-in-left,
-  .fade-in-right,
-  .scale-up,
-  .slide-up-rotate,
-  .stagger-children > *,
-  .stagger-cards > * {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* Text muted utility */
-.text-muted {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-/* ============================================
-   4. LAYOUT UTILITIES
-   ============================================ */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--space-24);
-  padding-right: var(--space-24);
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-left: var(--space-32);
-    padding-right: var(--space-32);
-  }
-}
-
-/* Section base styles */
-section {
-  position: relative;
-}
-
-.section-hero {
-  padding-top: calc(var(--nav-height) + var(--space-96));
-  padding-bottom: var(--space-96);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-}
-
-.section-about,
-.section-cuerdos,
-.section-packaging,
-.section-projects,
-.section-stack,
-.section-contact {
-  padding-top: var(--space-96);
-  padding-bottom: var(--space-96);
-}
-
-@media (max-width: 767px) {
-  .section-hero {
-    padding-top: calc(var(--nav-height) + var(--space-64));
-    padding-bottom: var(--space-64);
-    min-height: auto;
-  }
-
-  .section-about,
-  .section-cuerdos,
-  .section-packaging,
-  .section-projects,
-  .section-stack,
-  .section-contact {
-    padding-top: var(--space-64);
-    padding-bottom: var(--space-64);
-  }
-}
-
-/* ============================================
-   5. TYPOGRAPHY SYSTEM
-   ============================================ */
-
-/* H1 - Hero Name */
-.hero-title {
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-16);
-  color: var(--text-primary);
-}
-
-/* H2 - Section Titles */
-.section-title {
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  margin-bottom: var(--space-16);
-  color: var(--text-primary);
-}
-
-/* H3 - Card Titles / Subsections */
-.project-title,
-.project-card-title,
-.stack-category-title,
-.contributions-title,
-.methodology-title,
-.other-tools-title,
-.contribution-category {
-  font-size: clamp(18px, 2.5vw, 24px);
-  font-weight: 600;
-  line-height: 1.25;
-  margin-bottom: var(--space-12);
-  color: var(--text-primary);
-}
-
-/* Body text */
-.hero-description,
-.about-text p,
-.about-intro,
-.packaging-intro,
-.packaging-content > p:not(.packaging-intro),
-.project-body p,
-.project-card-body p,
-.cuerdos-intro p,
-.contact-intro,
-.about-examples li,
-.cuerdos-contributions li {
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--text-secondary);
-}
-
-@media (min-width: 768px) {
-  .hero-description,
-  .about-text p,
-  .about-intro,
-  .packaging-intro,
-  .packaging-content > p:not(.packaging-intro) {
-    font-size: 17px;
-  }
-}
-
-/* Hero subtitle */
-.hero-subtitle {
-  font-size: clamp(20px, 3vw, 28px);
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-8);
-}
-
-/* Hero keywords */
-.hero-keywords {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--accent);
-  letter-spacing: 0.02em;
-  margin-bottom: var(--space-24);
-}
-
-/* Section subtitle */
-.section-subtitle,
-.project-subtitle,
-.project-card-subtitle {
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--text-muted);
-  margin-bottom: var(--space-24);
-}
-
-/* Methodology flow */
-.methodology-flow {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--accent);
-  letter-spacing: 0.01em;
-}
-
-/* Other tools list */
-.other-tools-list {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
-
-/* ============================================
-   6. NAVIGATION
-   ============================================ */
-#main-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  background: rgba(15, 23, 42, 0.95);
-  border-bottom: 1px solid var(--border-subtle);
-  height: var(--nav-height);
-}
-
-.nav-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-24);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-@media (min-width: 768px) {
-  .nav-container {
-    padding: 0 var(--space-32);
-  }
-}
-
-/* Logo */
-.nav-logo {
-  font-family: var(--font-sans);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: var(--space-10);
-  z-index: 1001;
-  transition: color var(--transition-fast);
-}
-
-.nav-logo:hover {
-  color: var(--accent);
-}
-
-.nav-logo img {
-  height: 28px;
-  width: auto;
-}
-
-/* Navigation menu */
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: var(--space-32);
-}
-
-.nav-menu a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: color var(--transition-fast);
-  position: relative;
-}
-
-.nav-menu a:hover,
-.nav-menu a:focus-visible {
-  color: var(--text-primary);
-}
-
-.nav-menu a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transition: transform var(--transition-base);
-}
-
-.nav-menu a:hover::after {
-  transform: scaleX(1);
-}
-
-/* Nav CuerdOS link with logo */
-.nav-link-cuerdos {
-  display: inline-flex !important;
-  align-items: center;
-  gap: var(--space-8) !important;
-}
-
-.nav-link-cuerdos img {
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-}
-
-.nav-link-cuerdos::after {
-  display: none !important;
-}
-
-/* Mobile toggle button */
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  padding: 8px;
-  z-index: 1002;
-  position: relative;
-}
-
-.nav-toggle:hover {
-  opacity: 0.8;
-}
-
-.nav-toggle-bar {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--text-primary);
-  border-radius: 1px;
-  transition: transform var(--transition-base), opacity var(--transition-base);
-  margin: 0 auto;
-}
-
-/* Mobile navigation state - hamburger to X animation */
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* Mobile responsive nav */
-@media (max-width: 1023px) {
-  .nav-toggle {
-    display: flex;
-  }
-
-  /* Contenedor del nav necesita posición relativa para el contexto del overlay */
-  #main-nav {
-    position: relative;
-  }
-
-  .nav-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(300px, 85vw);
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-32);
-    background: var(--bg-secondary);
-    border-left: 1px solid var(--border-default);
-    padding: var(--space-48);
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1001;
-    overflow-y: auto;
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
-  }
-
-  .nav-menu.is-open {
-    transform: translateX(0);
-  }
-
-  .nav-menu a {
-    font-size: 20px;
-    font-weight: 500;
-    padding: var(--space-12) 0;
-    display: block;
-    transition: color var(--transition-fast);
-  }
-
-  .nav-menu a:hover,
-  .nav-menu a:focus-visible {
-    color: var(--accent);
-  }
-
-  .nav-menu a::after {
-    display: none;
-  }
-
-  /* Enlace CuerdOS en menú móvil */
-  .nav-link-cuerdos {
-    display: inline-flex !important;
-    align-items: center;
-    gap: var(--space-12) !important;
-    font-size: 20px !important;
-  }
-
-  .nav-link-cuerdos img {
-    width: 28px;
-    height: 28px;
-  }
-}
-
-/* Nav overlay for mobile - debe estar fuera de <nav> para evitar stacking context */
-.nav-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 998;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.nav-overlay.is-visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ============================================
-   7. HERO SECTION
-   ============================================ */
-.container-hero {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-48);
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .container-hero {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-64);
-  }
-}
-
-.hero-content {
-  max-width: 560px;
-}
-
-/* Badge component */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-8);
-  padding: var(--space-8) var(--space-16);
-  background: var(--accent-subtle);
-  border: 1px solid rgba(132, 204, 22, 0.2);
-  border-radius: 100px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-24);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.badge-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: pulse-dot 2s ease-in-out infinite;
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Hero CTAs */
-.hero-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-16);
-  margin-top: var(--space-32);
-}
-
-/* Hero image */
-.hero-image {
-  position: relative;
-}
-
-.figure-hero {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-card), var(--shadow-glow-sm);
-  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
-}
-
-.figure-hero:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-4px);
-}
-
-.figure-hero img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform var(--transition-slow);
-}
-
-.figure-hero:hover img {
-  transform: scale(1.01);
-}
-
-/* Image placeholder styling */
-.image-placeholder {
-  width: 100%;
-  aspect-ratio: 16/10;
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-  border: 2px dashed var(--border-default);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-12);
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.image-placeholder-icon {
-  font-size: 48px;
-  opacity: 0.5;
-}
-
-/* ============================================
-   8. ABOUT SECTION
-   ============================================ */
-.about-content {
-  max-width: 800px;
-}
-
-.about-intro {
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-24);
-}
-
-/* Methodology card */
-.methodology {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-}
-
-.methodology-title {
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: var(--space-12);
-}
-
-/* About examples */
-.about-examples {
-  margin-top: var(--space-32);
-}
-
-.about-examples ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.about-examples li {
-  position: relative;
-  padding-left: var(--space-24);
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.about-examples li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 10px;
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 2px;
-}
-
-/* ============================================
-   9. CUERDOS SECTION
-   ============================================ */
-.section-cuerdos {
-  background: 
-    linear-gradient(
-      180deg,
-      rgba(15, 23, 42, 0.7) 0%,
-      rgba(17, 24, 39, 0.85) 50%,
-      rgba(15, 23, 42, 0.7) 100%
-    );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  position: relative;
-}
-
-/* Subtle grid visibility through section */
-.section-cuerdos::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.section-header {
-  margin-bottom: var(--space-48);
-}
-
-.section-header-with-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-16);
-  flex-wrap: wrap;
-}
-
-.section-header-with-logo img {
-  height: 48px;
-  width: auto;
-}
-
-.cuerdos-intro {
-  max-width: 800px;
-  margin-bottom: var(--space-48);
-}
-
-/* CuerdOS main figure */
-.figure-cuerdos-main {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-card);
-}
-
-.figure-cuerdos-main img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Contributions section */
-.cuerdos-contributions {
-  margin-top: var(--space-48);
-  margin-bottom: var(--space-48);
-}
-
-.contributions-title {
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-32);
-  line-height: 1.6;
-}
-
-.contribution-group {
-  margin-bottom: var(--space-24);
-  padding: var(--space-24);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  transition: border-color var(--transition-base);
-}
-
-.contribution-group:hover {
-  border-color: var(--border-hover);
-}
-
-.contribution-category {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--accent);
-  margin-bottom: var(--space-12);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.cuerdos-contributions ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.cuerdos-contributions li {
-  position: relative;
-  padding-left: var(--space-20);
-  color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.cuerdos-contributions li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-/* CuerdOS CTA */
-.cuerdos-cta {
-  text-align: left;
-}
-
-/* ============================================
-   10. PACKAGING PIPELINE SECTION
-   ============================================ */
-.section-packaging {
-  background: var(--bg-primary);
-}
-
-.packaging-content {
-  max-width: 900px;
-}
-
-.packaging-intro {
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: var(--space-32);
-}
-
-/* Pipeline stages visualization */
-.pipeline-stages {
-  margin: var(--space-48) 0;
-  padding: var(--space-32);
-  background: var(--bg-terminal);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  overflow-x: auto;
-}
-
-.pipeline-flow {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  counter-reset: pipeline-counter;
-}
-
-@media (min-width: 768px) {
-  .pipeline-flow {
-    flex-direction: row;
-    align-items: stretch;
-  }
-}
-
-.pipeline-flow li {
-  position: relative;
-  flex: 1;
-  padding: var(--space-20);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-  counter-increment: pipeline-counter;
-}
-
-.pipeline-flow li::before {
-  content: counter(pipeline-counter, decimal-leading-zero);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--accent);
-  background: var(--accent-subtle);
-  padding: var(--space-4) var(--space-10);
-  border-radius: var(--radius-sm);
-  align-self: flex-start;
-}
-
-/* Pipeline connectors (desktop only) */
-@media (min-width: 768px) {
-  .pipeline-flow li:not(:last-child)::after {
-    content: '→';
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    font-size: 18px;
-  }
-}
-
-.pipeline-stage-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.pipeline-stage-desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/* Pipeline visual when displayed as side image */
-.pipeline-visual {
-  margin: 0;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.pipeline-visual .pipeline-flow {
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.pipeline-visual .pipeline-flow li {
-  padding: var(--space-16) var(--space-20);
-}
-
-.pipeline-visual .pipeline-flow li::after {
-  content: '↓' !important;
-  position: static !important;
-  transform: none !important;
-  display: block;
-  text-align: center;
-  margin-top: var(--space-8);
-  font-size: 14px;
-}
-
-/* Hide connector after last item */
-.pipeline-visual .pipeline-flow li:last-child::after {
-  display: none !important;
-}
-
-/* ============================================
-   11. PROJECTS SECTION
-   ============================================ */
-.section-projects {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  position: relative;
-}
-
-/* Subtle grid visibility through projects section */
-.section-projects::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.25;
-  pointer-events: none;
-}
-
-/* Ensure content sits above grid overlay */
-.section-cuerdos > *,
-.section-projects > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* Featured project */
-.project-featured {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-48);
-  padding: var(--space-32);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--space-48);
-  box-shadow: var(--shadow-card);
-}
-
-@media (min-width: 1024px) {
-  .project-featured {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-}
-
-.project-header {
-  margin-bottom: var(--space-24);
-}
-
-.project-body {
-  margin-bottom: var(--space-24);
-}
-
-.project-body p {
-  margin-bottom: var(--space-16);
-}
-
-.project-cta {
-  margin-top: var(--space-24);
-}
-
-/* Project image in featured */
-.project-image .figure {
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-card);
-}
-
-.project-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform var(--transition-slow);
-}
-
-.project-image .figure:hover img {
-  transform: scale(1.02);
-}
-
-/* Projects grid */
-.projects-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-24);
-  margin-bottom: var(--space-48);
-}
-
-@media (min-width: 768px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Project cards */
-.project-card {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-28);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Subtle gradient overlay on cards */
-.project-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.project-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-}
-
-.project-card:hover::before {
-  opacity: 1;
-}
-
-.project-card-header {
-  margin-bottom: var(--space-16);
-}
-
-.project-card-title {
-  font-size: 19px;
-}
-
-.project-card-subtitle {
-  font-size: 14px;
-  margin-bottom: 0;
-}
-
-.project-card-body {
-  flex: 1;
-  margin-bottom: var(--space-20);
-}
-
-.project-card-body p {
-  font-size: 15px;
-  margin-bottom: var(--space-12);
-}
-
-.project-card-footer {
-  padding-top: var(--space-16);
-  border-top: 1px solid var(--border-subtle);
-}
-
-/* Other tools aside */
-.other-tools {
-  padding: var(--space-24);
-  background: var(--bg-card);
-  border: 1px dashed var(--border-default);
-  border-radius: var(--radius-lg);
-}
-
-.other-tools-title {
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: var(--space-12);
-}
-
-/* ============================================
-   12. STACK SECTION
-   ============================================ */
-.stack-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-24);
-}
-
-@media (min-width: 640px) {
-  .stack-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .stack-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.stack-category {
-  padding: var(--space-24);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  transition: border-color var(--transition-base);
-}
-
-.stack-category:hover {
-  border-color: var(--border-hover);
-}
-
-.stack-category-title {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  margin-bottom: var(--space-16);
-  padding-bottom: var(--space-12);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.stack-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.stack-item {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-secondary);
-  padding: var(--space-6) 0;
-  transition: color var(--transition-fast);
-}
-
-.stack-item:hover {
-  color: var(--text-primary);
-}
-
-/* ============================================
-   13. CONTACT SECTION
-   ============================================ */
-.section-contact {
-  background: var(--bg-primary);
-  text-align: center;
-  padding-top: 300px;
-  padding-bottom: 300px;
-}
-
-.section-contact .section-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.contact-intro {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-40);
-  max-width: 480px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Contact links */
-.contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-16);
-}
-
-.contact-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-12);
-  padding: var(--space-16) var(--space-28);
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  transition: all var(--transition-base);
-}
-
-.contact-link:hover {
-  border-color: var(--accent);
-  background: var(--accent-subtle);
-  color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.contact-link-icon {
-  font-size: 20px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.contact-link-text {
-  white-space: nowrap;
-}
-
-/* ============================================
-   14. FOOTER
-   ============================================ */
-.footer {
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-subtle);
-  padding: var(--space-32) 0;
-  margin-top: auto;
-}
-
-.container-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-16);
-}
-
-.footer-copy {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.footer-tech {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin: 0;
-  font-family: var(--font-mono);
-}
-
-/* Footer CuerdOS link */
-.footer-cuerdos-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-6);
-  color: var(--text-secondary);
-  transition: color var(--transition-fast);
-}
-
-.footer-cuerdos-link:hover {
-  color: var(--accent);
-}
-
-.footer-cuerdos-link img {
-  border-radius: 2px;
-}
-
-/* ============================================
-   15. BUTTON COMPONENTS
-   ============================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-8);
-  padding: var(--space-14) var(--space-28);
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-base);
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-
-.btn span {
-  transition: transform var(--transition-base);
-}
-
-.btn:hover span {
-  transform: translateX(4px);
-}
-
-/* Primary button - Outline with accent */
-.btn-primary {
-  background: transparent;
-  color: var(--accent);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-glow-sm);
-}
-
-.btn-primary:hover,
-.btn-primary:focus-visible {
-  background: var(--accent-subtle);
-  border-color: var(--accent-hover);
-  color: var(--accent-hover);
-  box-shadow: var(--shadow-glow-md);
-}
-
-/* Secondary button - Ghost */
-.btn-secondary {
-  background: transparent;
-  color: var(--text-secondary);
-  border-color: transparent;
-}
-
-.btn-secondary:hover,
-.btn-secondary:focus-visible {
-  color: var(--text-primary);
-  background: var(--bg-card);
-}
-
-/* Text button */
-.btn-text {
-  background: transparent;
-  color: var(--accent);
-  border-color: transparent;
-  padding: var(--space-8) var(--space-12);
-  font-size: 14px;
-}
-
-.btn-text:hover,
-.btn-text:focus-visible {
-  color: var(--accent-hover);
-  background: var(--accent-subtle);
-}
-
-/* ============================================
-   16. TAG COMPONENTS
-   ============================================ */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  margin-top: var(--space-20);
-}
-
-.tags-small {
-  margin-top: var(--space-16);
-}
-
-.tag {
-  display: inline-block;
-  padding: var(--space-6) var(--space-14);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 100px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
-}
-
-.tag:hover {
-  border-color: var(--border-default);
-  color: var(--text-primary);
-  background: var(--bg-card);
-}
-
-/* ============================================
-   17. FIGURE/IMAGE COMPONENTS
-   ============================================ */
-.figure {
-  margin: 0;
-}
-
-figure img {
-  border-radius: var(--radius-lg);
-}
-
-figcaption {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-align: center;
-  margin-top: var(--space-12);
-  font-style: italic;
-}
-
-/* ============================================
-   18. TERMINAL/CODE BLOCK (for future use)
-   ============================================ */
-.terminal {
-  background: var(--bg-terminal);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.terminal-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  padding: var(--space-12) var(--space-16);
-  background: rgba(255, 255, 255, 0.03);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.terminal-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.terminal-dot-red { background: #FF5F57; }
-.terminal-dot-yellow { background: #FEBC2E; }
-.terminal-dot-green { background: #28C840; }
-
-.terminal-body {
-  padding: var(--space-20);
-  overflow-x: auto;
-}
-
-.terminal-prompt {
-  color: var(--accent);
-}
-
-.terminal-command {
-  color: var(--text-primary);
-}
-
-.terminal-output {
-  color: var(--text-muted);
-}
-
-/* Syntax highlighting colors for terminal */
-.syntax-comment { color: var(--text-muted); font-style: italic; }
-.syntax-string { color: #A5D6FF; }
-.syntax-keyword { color: #FF7B72; }
-.syntax-function { color: #D2A8FF; }
-.syntax-variable { color: #79C0FF; }
-.syntax-number { color: #79C0FF; }
-
-/* ============================================
-   19. ANIMATIONS (SUBTLE ONLY)
-   ============================================ */
-
-/* ===== SCROLL REVEAL ANIMATIONS ===== */
-
-/* Base fade-in on scroll */
-.fade-in {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: 
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fade-in.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Fade in from left */
-.fade-in-left {
-  opacity: 0;
-  transform: translateX(-30px);
-  transition: 
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fade-in-left.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Fade in from right */
-.fade-in-right {
-  opacity: 0;
-  transform: translateX(30px);
-  transition: 
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.fade-in-right.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Scale up animation */
-.scale-up {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: 
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scale-up.is-visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Slide up with slight rotation (for cards) */
-.slide-up-rotate {
-  opacity: 0;
-  transform: translateY(40px) rotateX(2deg);
-  transition: 
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.slide-up-rotate.is-visible {
-  opacity: 1;
-  transform: translateY(0) rotateX(0);
-}
-
-/* ===== STAGGERED CHILDREN ANIMATIONS ===== */
-
-.stagger-children > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.stagger-children.is-visible > *:nth-child(1) { transition-delay: 0ms; }
-.stagger-children.is-visible > *:nth-child(2) { transition-delay: 80ms; }
-.stagger-children.is-visible > *:nth-child(3) { transition-delay: 160ms; }
-.stagger-children.is-visible > *:nth-child(4) { transition-delay: 240ms; }
-.stagger-children.is-visible > *:nth-child(5) { transition-delay: 320ms; }
-.stagger-children.is-visible > *:nth-child(6) { transition-delay: 400ms; }
-.stagger-children.is-visible > *:nth-child(7) { transition-delay: 480ms; }
-.stagger-children.is-visible > *:nth-child(8) { transition-delay: 560ms; }
-
-.stagger-children.is-visible > * {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Stagger with scale effect for cards */
-.stagger-cards > * {
-  opacity: 0;
-  transform: translateY(30px) scale(0.97);
-  transition: 
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.stagger-cards.is-visible > *:nth-child(1) { transition-delay: 0ms; }
-.stagger-cards.is-visible > *:nth-child(2) { transition-delay: 100ms; }
-.stagger-cards.is-visible > *:nth-child(3) { transition-delay: 200ms; }
-.stagger-cards.is-visible > *:nth-child(4) { transition-delay: 300ms; }
-
-.stagger-cards.is-visible > * {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* ===== MICRO-INTERACTIONS & HOVER STATES ===== */
-
-/* Subtle float animation for hero elements */
-@keyframes float-subtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.float-animation {
-  animation: float-subtle 6s ease-in-out infinite;
-}
-
-/* Glow pulse for accent elements */
-@keyframes glow-pulse {
-  0%, 100% { 
-    box-shadow: var(--shadow-glow-sm);
-  }
-  50% { 
-    box-shadow: var(--shadow-glow-md);
-  }
-}
-
-.glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-/* Link underline animation */
-a.text-link {
-  color: var(--accent);
-  text-decoration: none;
-  background: linear-gradient(currentColor, currentColor);
-  background-size: 0 1px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 0.3s ease;
-}
-
-a.text-link:hover {
-  background-size: 100% 1px;
-}
-
-/* Tag hover lift effect */
-.tag {
-  transition: 
-    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.tag:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border-color: var(--border-hover);
-}
-
-/* Section title subtle entrance */
-.section-title {
-  position: relative;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.section-title.is-visible::after,
-.fade-in .section-title::after {
-  width: 60px;
-}
-
-/* Contribution group enhanced hover */
-.contribution-group {
-  position: relative;
-  overflow: hidden;
-}
-
-.contribution-group::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(132, 204, 22, 0.03),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.contribution-group:hover::before {
-  left: 100%;
-}
-
-/* Contact link ripple effect */
-.contact-link {
-  position: relative;
-  overflow: hidden;
-}
-
-.contact-link::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: radial-gradient(
-    circle,
-    rgba(132, 204, 22, 0.15),
-    transparent
-  );
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: 
-    width 0.4s ease,
-    height 0.4s ease;
-}
-
-.contact-link:hover::after {
-  width: 300px;
-  height: 300px;
-}
-
-/* Button press effect */
-.btn:active {
-  transform: scale(0.98);
-}
-
-/* ============================================
-   20. RESPONSIVE ADJUSTMENTS
-   ============================================ */
-
-/* Tablet adjustments */
-@media (min-width: 768px) and (max-width: 1279px) {
-  .hero-title {
-    font-size: 44px;
-  }
-  
-  .section-title {
-    font-size: 34px;
-  }
-}
-
-/* Mobile adjustments */
-@media (max-width: 767px) {
-  :root {
-    --nav-height: 56px;
-  }
-  
-  body {
-    font-size: 15px;
-  }
-  
-  .hero-title {
-    font-size: 36px;
-  }
-  
-  .hero-subtitle {
-    font-size: 20px;
-  }
-  
-  .section-title {
-    font-size: 28px;
-  }
-  
-  .badge {
-    font-size: 11px;
-    padding: var(--space-6) var(--space-12);
-  }
-  
-  .btn {
-    padding: var(--space-12) var(--space-24);
-    font-size: 14px;
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .hero-ctas {
-    flex-direction: column;
-  }
-  
-  .contact-links {
-    flex-direction: column;
-  }
-  
-  .contact-link {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .container-footer {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .pipeline-flow {
-    gap: var(--space-12);
-  }
-  
-  .pipeline-flow li::after {
-    content: '↓';
-    position: static;
-    transform: none;
-    display: block;
-    text-align: center;
-    margin-top: var(--space-8);
-    color: var(--text-muted);
-  }
-  
-  .contribution-group {
-    padding: var(--space-20);
-  }
-  
-  .stack-category {
-    padding: var(--space-20);
-  }
-  
-  .project-card {
-    padding: var(--space-24);
-  }
-  
-  .project-featured {
-    padding: var(--space-24);
-  }
-}
-
-/* Large desktop refinements */
-@media (min-width: 1280px) {
-  .container {
-    padding-left: var(--space-32);
-    padding-right: var(--space-32);
-  }
-  
-  .hero-title {
-    font-size: 56px;
-  }
-  
-  .section-title {
-    font-size: 40px;
-  }
-}
-
-/* ============================================
-   21. PRINT STYLES
-   ============================================ */
-@media print {
-  #main-nav,
-  .skip-link,
-  .nav-toggle,
-  .btn {
-    display: none !important;
-  }
-  
-  body {
-    background: white;
-    color: black;
-  }
-  
-  .section-hero {
-    padding-top: 0;
-    min-height: auto;
-  }
-  
-  section {
-    page-break-inside: avoid;
-  }
-}
-
-/* ============================================
-   22. SELECTION STYLES
-   ============================================ */
-::selection {
-  background: var(--accent);
-  color: var(--bg-primary);
-}
-
-::-moz-selection {
-  background: var(--accent);
-  color: var(--bg-primary);
-}
-
-/* ============================================
-   23. SCROLLBAR STYLES (Webkit)
-   ============================================ */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border-default);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
-  </style>
+:root{--lime:#84CC16;--mute:#a3a3a3;--w:1240px;--f:'Archivo',system-ui,sans-serif;--m:'JetBrains Mono',monospace}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border-radius:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
+body{font:400 17px/1.6 var(--f);color:#fff;background:#000;display:flex;flex-direction:column;min-height:100vh;-webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#main-content{flex:1}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+p{margin-bottom:16px}p:last-child{margin-bottom:0}
+strong{font-weight:700;color:inherit}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.skip-link{position:fixed;top:-100%;left:16px;z-index:9999;padding:12px 24px;background:var(--lime);color:#000;font-weight:700}
+.skip-link:focus{top:16px}
+:focus-visible{outline:3px solid #a3e635;outline-offset:3px}
+.container{max-width:var(--w);margin:0 auto;padding:0 28px}
+main>section{padding:104px 0;border-top:3px solid #fff}
+.section-title{font:900 clamp(2.4rem,6.5vw,5.4rem)/.92 var(--f);font-stretch:62%;text-transform:uppercase;margin-bottom:48px}
+.text-muted{color:var(--mute)}
+
+/* NAV */
+#main-nav{position:sticky;top:0;z-index:100;background:#000;border-bottom:3px solid #fff}
+.nav-container{max-width:var(--w);margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font:900 1.4rem/1 var(--f);font-stretch:62%;text-transform:uppercase;letter-spacing:.02em}
+.nav-menu{display:flex;gap:4px;align-items:center}
+.nav-menu a{display:block;padding:8px 14px;font:600 .95rem var(--f)}
+.nav-menu a:hover{background:#fff;color:#000!important}
+.nav-menu .nav-cta a{background:var(--lime);color:#000;margin-left:8px;font-weight:700}
+.nav-menu .nav-cta a:hover{background:#fff}
+.nav-toggle{display:none;width:44px;height:44px;border:2px solid #fff;padding:9px 0}
+.nav-toggle-bar{display:block;width:20px;height:2px;background:#fff;margin:4px auto}
+.nav-overlay{position:fixed;inset:64px 0 0 0;background:rgba(0,0,0,.75);opacity:0;pointer-events:none;z-index:90}
+.nav-overlay.is-visible{opacity:1;pointer-events:auto}
+
+/* BOTONES */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;font:700 1rem var(--f);border:3px solid #fff;transition:transform .12s steps(2),box-shadow .12s steps(2),background .12s,color .12s}
+.btn-primary{background:var(--lime);color:#000;border-color:var(--lime);box-shadow:6px 6px 0 #fff}
+.btn-primary:hover{transform:translate(6px,6px);box-shadow:0 0 0 #fff}
+.btn-secondary:hover{background:#fff;color:#000}
+.btn-text{padding:0;border:0;color:var(--lime);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+
+/* HERO */
+.section-hero{border-top:0;padding:64px 0 104px}
+.container-hero{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;align-items:start}
+.hero-content{display:contents}
+.badge{grid-column:1/-1;justify-self:start;display:flex;gap:10px;align-items:center;background:var(--lime);color:#000;font:700 .9rem var(--m);padding:6px 12px;margin-bottom:20px}
+.badge-dot{width:8px;height:8px;background:#000}
+.hero-title{grid-column:1/-1;font:900 clamp(3.4rem,13vw,12rem)/.85 var(--f);font-stretch:62%;text-transform:uppercase;letter-spacing:-.015em;margin-bottom:44px;animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+.hero-subtitle{grid-column:1;font:800 clamp(1.6rem,3vw,2.4rem)/1.1 var(--f);font-stretch:75%;margin-bottom:14px}
+.hero-keywords{grid-column:1;font:500 .95rem var(--m);color:var(--lime);margin-bottom:20px}
+.hero-description{grid-column:1;color:#d4d4d4;max-width:58ch;margin-bottom:32px}
+.hero-ctas{grid-column:1;display:flex;gap:16px;flex-wrap:wrap}
+.hero-image{grid-column:2;grid-row:3/span 4;animation:rise .7s .15s cubic-bezier(.2,.8,.2,1) both}
+.figure{border:3px solid #fff;box-shadow:12px 12px 0 var(--lime)}
+.figure img{width:100%}
+@keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+
+/* SOBRE MI */
+.about-content{display:grid;grid-template-columns:1.1fr .9fr;gap:48px 56px;align-items:start}
+.about-intro{font:800 clamp(1.6rem,2.6vw,2.3rem)/1.15 var(--f);font-stretch:80%;margin-bottom:24px}
+.about-text p{max-width:62ch;color:#d4d4d4}
+.about-text .about-intro{color:#fff}
+.about-examples{border:3px solid #fff}
+.about-examples li{padding:18px 22px;border-bottom:2px solid #fff;font-size:.98rem}
+.about-examples li:last-child{border-bottom:0}
+.methodology{grid-column:1/-1}
+.methodology-title{font:700 1rem var(--m);color:var(--lime);margin-bottom:16px}
+.methodology-flow{display:grid;grid-template-columns:repeat(5,1fr);counter-reset:s;border:3px solid #fff;margin:0}
+.methodology-flow li{counter-increment:s;padding:24px 20px;font:900 clamp(1.3rem,2.4vw,2rem)/1 var(--f);font-stretch:70%;text-transform:uppercase;border-right:3px solid #fff}
+.methodology-flow li::before{content:counter(s,decimal-leading-zero);display:block;font:500 .85rem var(--m);color:var(--lime);margin-bottom:14px}
+.methodology-flow li:last-child{border-right:0;background:var(--lime);color:#000}
+.methodology-flow li:last-child::before{color:#000}
+
+/* CUERDOS */
+.section-header-with-logo{display:flex;gap:20px;align-items:center;margin-bottom:40px}
+.section-header-with-logo img{width:64px;height:64px}
+.section-header-with-logo .section-title{margin-bottom:0}
+.section-subtitle{font:500 1rem var(--m);color:var(--lime);margin-top:8px}
+.cuerdos-intro{columns:2;column-gap:48px;margin-bottom:56px;color:#d4d4d4}
+.cuerdos-intro p{break-inside:avoid}
+.figure-cuerdos-main{margin:0 12px 72px 0}
+.cuerdos-contributions{display:grid;grid-template-columns:repeat(3,1fr);padding:0 3px 3px 0}
+.contributions-title{grid-column:1/-1;font:800 clamp(1.2rem,2vw,1.6rem)/1.3 var(--f);max-width:62ch;margin-bottom:32px}
+.contribution-group{border:3px solid #fff;margin:0 -3px -3px 0;padding:28px;transition:background .12s,color .12s}
+.contribution-group:hover{background:var(--lime);color:#000}
+.contribution-category{font:800 1.4rem/1.1 var(--f);font-stretch:75%;color:var(--lime);margin-bottom:14px}
+.contribution-group:hover .contribution-category{color:#000}
+.contribution-group li{padding:8px 0;border-top:1px solid rgba(128,128,128,.5);font-size:.95rem}
+.cuerdos-cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:56px}
+.cuerdos-cta .btn-secondary{order:2}
+
+.features-title{font:800 clamp(1.6rem,3vw,2.4rem)/1.1 var(--f);font-stretch:75%;margin-bottom:28px}
+.cuerdos-features{display:grid;grid-template-columns:repeat(3,1fr);padding:0 3px 3px 0;margin-bottom:72px}
+.cuerdos-features .wide{grid-column:span 2}
+.contribution-group p{font-size:.95rem}
+.contribution-group .feature-credit{font:500 .85rem var(--m);margin-top:14px;opacity:.7}
+
+.feature-credit a,.contribution-group li a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.team-head{margin-top:80px}
+.team-list{border:3px solid #fff}
+.team-list li{display:grid;grid-template-columns:1fr 1.6fr;gap:24px;align-items:center;padding:18px 24px;border-bottom:2px solid #fff}
+.team-list li:last-child{border-bottom:0}
+.team-person{font:900 clamp(1.5rem,3vw,2.2rem)/1 var(--f);font-stretch:70%}
+.team-tasks{font-size:1.05rem;line-height:1.5}
+.team-person a{color:var(--lime);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:3px}
+.team-list .team-me a{color:#000}
+.team-self{display:inline-block;background:#000;color:var(--lime);font:700 .8rem var(--m);padding:3px 8px;margin-left:12px;vertical-align:middle}
+.team-list .team-me{background:var(--lime);color:#000}
+
+/* PROYECTOS */
+.project-featured{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;border:3px solid #fff;padding:40px;margin-bottom:40px}
+article.project-featured:first-of-type{background:var(--lime);color:#000;border-color:var(--lime);padding:56px}
+.project-flag{display:inline-block;background:#000;color:var(--lime);font:700 .85rem var(--m);padding:5px 10px;margin-bottom:18px}
+.project-title{font:900 clamp(2.2rem,4.5vw,3.4rem)/.95 var(--f);font-stretch:62%;text-transform:uppercase;margin-bottom:10px}
+article.project-featured:first-of-type .project-title{font-size:clamp(3.2rem,8vw,6.5rem)}
+.project-subtitle{font:500 .95rem var(--m);color:var(--lime);margin-bottom:24px}
+article.project-featured:first-of-type .project-subtitle{color:#000}
+.project-body p{max-width:56ch;color:#d4d4d4}
+article.project-featured:first-of-type .project-body p{color:#111}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0}
+.tag{border:2px solid currentColor;padding:3px 10px;font:500 .8rem var(--m)}
+article.project-featured:first-of-type .btn-primary{background:#000;color:#fff;border-color:#000;box-shadow:6px 6px 0 #fff}
+article.project-featured:first-of-type .btn-primary:hover{box-shadow:0 0 0 #fff}
+article.project-featured:first-of-type .figure{border-color:#000;box-shadow:14px 14px 0 #000}
+.pipeline-flow{counter-reset:p;border-left:3px solid var(--lime)}
+.pipeline-flow li{counter-increment:p;position:relative;padding:18px 20px 18px 60px;border-bottom:2px solid rgba(255,255,255,.2)}
+.pipeline-flow li:last-child{border-bottom:0}
+.pipeline-flow li::before{content:counter(p);position:absolute;left:18px;top:18px;font:800 1.4rem var(--m);color:var(--lime)}
+.pipeline-stage-name{display:block;font:800 1.6rem/1 var(--f);font-stretch:75%;text-transform:uppercase}
+.pipeline-stage-desc{display:block;color:var(--mute);font-size:.95rem}
+.projects-grid{display:grid;gap:40px}
+.project-card{border:3px solid #fff;padding:32px}
+.project-card-title{font:900 2.2rem/1 var(--f);font-stretch:70%;text-transform:uppercase;margin-bottom:8px}
+.project-card-subtitle{font:500 .95rem var(--m);color:var(--lime);margin-bottom:20px}
+.project-card-body p{max-width:70ch;color:#d4d4d4}
+.other-tools{border-top:3px solid #fff;margin-top:40px;padding-top:24px}
+.other-tools-title{font:700 1rem var(--m);color:var(--lime);margin-bottom:10px}
+.other-tools-list{color:var(--mute);max-width:80ch}
+
+/* GITHUB */
+main>.section-github{background:#fff;color:#000;border-top:0}
+.github-title{font:900 clamp(2.6rem,8.5vw,7.5rem)/.9 var(--f);font-stretch:62%;text-transform:uppercase;margin-bottom:24px}
+.section-github p{max-width:52ch;font-size:1.15rem;margin-bottom:36px}
+.section-github .btn-primary{background:#000;color:var(--lime);border-color:#000;box-shadow:6px 6px 0 var(--lime)}
+.section-github .btn-primary:hover{box-shadow:0 0 0 var(--lime)}
+
+/* STACK */
+.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);padding:0 3px 3px 0}
+.stack-category{border:3px solid #fff;margin:0 -3px -3px 0;padding:24px}
+.stack-category-title{font:700 .95rem var(--m);color:var(--lime);margin-bottom:14px}
+.stack-list{display:flex;flex-wrap:wrap;gap:8px}
+.stack-item{border:2px solid #fff;padding:3px 10px;font:600 .9rem var(--f);transition:background .12s,color .12s}
+.stack-item:hover{background:#fff;color:#000}
+
+/* CONTACTO */
+.contact-intro{font:800 clamp(1.6rem,3.4vw,2.8rem)/1.1 var(--f);font-stretch:75%;max-width:22ch;margin-bottom:24px}
+.contact-mail{display:inline-block;font:900 clamp(1.8rem,6.5vw,5.5rem)/1 var(--f);font-stretch:70%;color:var(--lime);border-bottom:4px solid var(--lime);margin-bottom:48px;word-break:break-all}
+.contact-mail:hover{background:var(--lime);color:#000}
+.contact-links{display:flex;flex-wrap:wrap;gap:16px}
+.contact-link{display:flex;align-items:center;gap:12px;padding:16px 24px;border:3px solid #fff;font:700 1.1rem var(--f);transition:background .12s,color .12s}
+.contact-link:hover{background:var(--lime);color:#000;border-color:var(--lime)}
+.contact-link:hover img{filter:brightness(0)}
+
+/* FOOTER */
+footer{border-top:3px solid #fff;padding:28px 0;font:500 .9rem var(--m);color:var(--mute)}
+.footer-cuerdos-link{display:inline-flex;align-items:center;gap:6px;color:var(--lime)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+ main>section{padding:72px 0}
+ .nav-toggle{display:block}
+ .nav-menu{position:fixed;top:64px;right:0;bottom:0;width:min(320px,85vw);flex-direction:column;align-items:stretch;gap:0;background:#000;border-left:3px solid #fff;padding:16px;transform:translateX(100%);transition:transform .2s steps(4)}
+ .nav-menu.is-open{transform:none}
+ .nav-menu a{padding:16px 12px;font-size:1.1rem}
+ .nav-menu .nav-cta a{margin:12px 0 0}
+ .container-hero,.about-content,.project-featured{grid-template-columns:1fr}
+ .container-hero{display:block}
+ .hero-content{display:block}
+ .hero-image{margin-top:56px}
+ .methodology-flow{grid-template-columns:1fr}
+ .methodology-flow li{border-right:0;border-bottom:3px solid #fff}
+ .methodology-flow li:last-child{border-bottom:0}
+ .cuerdos-intro{columns:1}
+ .team-list li{grid-template-columns:1fr;gap:6px}
+ .cuerdos-contributions,.cuerdos-features,.stack-grid{grid-template-columns:1fr 1fr}
+ article.project-featured:first-of-type{padding:32px}
+}
+@media(max-width:600px){
+ .cuerdos-contributions,.cuerdos-features,.stack-grid{grid-template-columns:1fr}
+ .cuerdos-features .wide{grid-column:auto}
+ .container{padding:0 20px}
+ .project-featured{padding:24px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:900px){.badge{display:inline-flex}}
+</style>
 </head>
 <body>
 
@@ -2123,10 +237,12 @@ a.text-link:hover {
       </button>
 
       <ul id="nav-menu" class="nav-menu" role="list">
-        <li><a href="#hero">Inicio</a></li>
+        <li><a href="#about">Sobre mí</a></li>
         <li><a href="#cuerdos">CuerdOS</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
+        <li><a href="#stack">Stack</a></li>
         <li><a href="#contacto">Contacto</a></li>
+        <li class="nav-cta"><a href="https://github.com/CuerdOS-Project" target="_blank" rel="noopener noreferrer">GitHub CuerdOS</a></li>
       </ul>
     </div>
   </nav>
@@ -2226,9 +342,7 @@ a.text-link:hover {
           <!-- Metodología de trabajo -->
           <div class="methodology">
             <h3 class="methodology-title">Metodología de trabajo</h3>
-            <p class="methodology-flow">
-              Investigar → Experimentar → Romper → Solucionar → Construir
-            </p>
+            <ol class="methodology-flow"><li>Investigar</li><li>Experimentar</li><li>Romper</li><li>Solucionar</li><li>Construir</li></ol>
           </div>
 
           <!-- Ejemplos del proceso -->
@@ -2243,7 +357,7 @@ a.text-link:hover {
                 Trabajar con xbps-src y su sistema de templates para construir la infraestructura de packaging de CuerdOS.
               </li>
               <li>
-                Crear runitctl para ofrecer una interfaz más cómoda para gestionar los servicios de runit.
+                Desarrollar Kron Installer, el instalador gráfico de CuerdOS, a partir de la base del instalador de Void Linux.
               </li>
             </ul>
           </div>
@@ -2279,6 +393,14 @@ a.text-link:hover {
             sobre la que he trabajado en distintas partes de la distribución.
             Actualmente estamos desarrollando internamente una nueva generación basada en Void Linux.
           </p>
+          <p>
+            CuerdOS Void apuesta por una experiencia visualmente atractiva, con personalidad propia y muy refinada. Está muy optimizada y arranca más rápido que Void, sobre todo en el live gracias al uso de zstd.
+          </p>
+          <!-- MEDICIÓN DE ARRANQUE: cuando tengas las cifras, quita los marcadores de comentario de este bloque y sustituye los XX.
+          <p>
+            En mis mediciones, el live de CuerdOS Void arranca en XX s frente a XX s del live de Void Linux (equipo: XXXX).
+          </p>
+          -->
         </div>
 
         <!-- Imagen principal: CuerdOS Sway completo -->
@@ -2294,6 +416,33 @@ a.text-link:hover {
             Entorno de escritorio CuerdOS Sway con Waybar y Wofi
           </figcaption>
         </figure>
+
+        <h3 class="features-title">Qué incluye CuerdOS Void</h3>
+        <div class="cuerdos-features">
+          <div class="contribution-group">
+            <h4 class="contribution-category">Yelena-Software</h4>
+            <p>Tienda de software de CuerdOS: instala paquetes XBPS, Flatpak y AppImages. Junto con fpm avisa cuando hay actualizaciones del sistema y permite aplicarlas desde la propia tienda.</p>
+          </div>
+          <div class="contribution-group">
+            <h4 class="contribution-category">Yelena-Hello</h4>
+            <p>Ventana de bienvenida. En el live ofrece instalar o probar el sistema; ya instalado, hace un tour y termina con enlaces a GitHub, redes sociales, Telegram, Ko-fi y más.</p>
+          </div>
+          <div class="contribution-group">
+            <h4 class="contribution-category">fpm</h4>
+            <p>Frontend de XBPS con una interfaz TUI interactiva, más legible y con una sintaxis cercana a la de Debian.</p>
+            <p class="feature-credit">Desarrollado por <a href="https://github.com/gatoverde95" target="_blank" rel="noopener noreferrer">gatoverde95</a>.</p>
+          </div>
+          <div class="contribution-group">
+            <h4 class="contribution-category">runittools</h4>
+            <p>Frontend de runit en la línea de fpm: TUI interactiva y comandos que recuerdan a gestionar servicios con systemctl.</p>
+            <p class="feature-credit">Desarrollado por <a href="https://github.com/gatoverde95" target="_blank" rel="noopener noreferrer">gatoverde95</a> a partir de mi runitctl.</p>
+          </div>
+          <div class="contribution-group wide">
+            <h4 class="contribution-category">Kontrol</h4>
+            <p>Panel de control avanzado al estilo de YaST, pero visualmente cuidado. Permite ajustar temas, autostart, portales XDG, AppImages, servicios, repositorios, arranque, kernels, cortafuegos, usuarios y almacenamiento.</p>
+            <p class="feature-credit">Desarrollado por <a href="https://github.com/gatoverde95" target="_blank" rel="noopener noreferrer">gatoverde95</a>.</p>
+          </div>
+        </div>
 
         <!-- Contribuciones detalladas -->
         <div class="cuerdos-contributions">
@@ -2361,7 +510,7 @@ a.text-link:hover {
                 <strong>Kron Installer:</strong> instalador gráfico (Python, PySide6, Bash)
               </li>
               <li>
-                <strong>runitctl:</strong> gestor de servicios runit con interfaz tipo systemctl
+                <strong>runitctl:</strong> gestor de servicios runit con interfaz tipo systemctl, creado por mí y hoy continuado como runittools por <a href="https://github.com/gatoverde95" target="_blank" rel="noopener noreferrer">gatoverde95</a>
               </li>
               <li>
                 <strong>Compilación y adaptación del kernel:</strong> compilación del kernel 
@@ -2388,8 +537,18 @@ a.text-link:hover {
           </div>
         </div>
 
+        <h3 class="features-title team-head">Quién hace qué en CuerdOS</h3>
+        <ul class="team-list" role="list">
+          <li class="team-me"><span class="team-person"><a href="https://github.com/vault6kZ" target="_blank" rel="noopener noreferrer">vault6kZ</a><span class="team-self">Soy yo</span></span><span class="team-tasks">Ediciones Sway y Xfce<br>Instalador<br>Packaging, ISOs y repositorios</span></li>
+          <li><span class="team-person"><a href="https://github.com/gatoverde95" target="_blank" rel="noopener noreferrer">gatoverde95</a></span><span class="team-tasks">Edición Plasma<br>fpm, runittools y Kontrol</span></li>
+          <li><span class="team-person"><a href="https://github.com/weikis336" target="_blank" rel="noopener noreferrer">weikis336</a></span><span class="team-tasks">Edición GNOME<br>Página web, principalmente</span></li>
+          <li><span class="team-person"><a href="https://github.com/Alecaishere" target="_blank" rel="noopener noreferrer">Alecaishere</a></span><span class="team-tasks">Configuración del kernel y optimizaciones</span></li>
+          <li><span class="team-person"><a href="https://github.com/YitanT" target="_blank" rel="noopener noreferrer">YitanT</a></span><span class="team-tasks">Ayuda con la página web</span></li>
+        </ul>
+
         <!-- CTA CuerdOS -->
         <div class="cuerdos-cta">
+          <a href="https://github.com/CuerdOS-Project" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">CuerdOS-Project en GitHub</a>
           <a 
             href="https://cuerdos.es" 
             class="btn btn-primary"
@@ -2420,6 +579,7 @@ a.text-link:hover {
         <article class="project project-featured">
           <div class="project-content">
             
+            <p class="project-flag">Mi desarrollo principal</p>
             <header class="project-header">
               <h3 class="project-title">Kron Installer</h3>
               <p class="project-subtitle">
@@ -2436,12 +596,13 @@ a.text-link:hover {
 
               <p>
                 Construido con Python y PySide6, utiliza scripts Bash para realizar
-                distintas tareas de configuración e instalación. Incluye pasos 
-                para configuración regional, repositorios, usuarios, particionado e instalación.
+                las tareas de configuración e instalación: configuración regional, repositorios,
+                usuarios, particionado e instalación.
               </p>
 
               <p>
-                Continúa en desarrollo activo como parte del proyecto CuerdOS.
+                Hoy está en un nivel de acabado alto, con un diseño cuidado y muy pulido. Gestiona
+                autologin, ofrece cifrado LUKS e instala Limine en lugar de GRUB. Sigue en desarrollo activo.
               </p>
             </div>
 
@@ -2452,12 +613,14 @@ a.text-link:hover {
               <li class="tag">Bash</li>
               <li class="tag">Qt</li>
               <li class="tag">GUI</li>
+                <li class="tag">LUKS</li>
+                <li class="tag">Limine</li>
             </ul>
 
             <!-- CTA -->
             <div class="project-cta">
               <a 
-                href="#" 
+                href="https://github.com/CuerdOS-Project" 
                 class="btn btn-primary"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -2507,12 +670,19 @@ a.text-link:hover {
               </p>
 
               <p>
-                Es un sistema modular en Bash que automatiza el proceso de actualización, compilación y publicación de paquetes.
+                Es un sistema modular en Bash que usa xbps-src para detectar y construir paquetes, 
+                con scripts propios para obtener información de fuentes externas cuando es necesario.
               </p>
 
               <p>
-                Utiliza las capacidades de xbps-src para detectar y construir paquetes, complementadas con scripts
-                propios para obtener información de fuentes externas cuando es necesario.
+                El repositorio principal (<strong>main</strong>) se construye en la propia máquina de compilación: 
+                allí se crea el repositorio y se firman tanto el repositorio como los paquetes. Después se sube 
+                automáticamente al VPS, que solo recibe el repositorio y sus actualizaciones y actúa como espejo.
+                Así, el servidor expuesto a internet únicamente sirve un repositorio ya construido y firmado.
+              </p>
+
+              <p>
+                Existe también un repositorio sandbox para el desarrollo interno.
               </p>
             </div>
 
@@ -2532,30 +702,10 @@ a.text-link:hover {
             <div class="pipeline-stages pipeline-visual">
               <h3 class="sr-only">Etapas del pipeline</h3>
               <ol class="pipeline-flow" role="list">
-                <li>
-                  <span class="pipeline-stage-name">Detección</span>
-                  <span class="pipeline-stage-desc">
-                    Identificación de nuevas versiones
-                  </span>
-                </li>
-                <li>
-                  <span class="pipeline-stage-name">Compilación</span>
-                  <span class="pipeline-stage-desc">
-                    Build mediante xbps-src
-                  </span>
-                </li>
-                <li>
-                  <span class="pipeline-stage-name">Publicación</span>
-                  <span class="pipeline-stage-desc">
-                    Incorporación al repositorio
-                  </span>
-                </li>
-                <li>
-                  <span class="pipeline-stage-name">Testing</span>
-                  <span class="pipeline-stage-desc">
-                    Validación antes de stable
-                  </span>
-                </li>
+                <li><span class="pipeline-stage-name">Detección</span><span class="pipeline-stage-desc">Identificación de nuevas versiones</span></li>
+                <li><span class="pipeline-stage-name">Compilación</span><span class="pipeline-stage-desc">Build mediante xbps-src</span></li>
+                <li><span class="pipeline-stage-name">Firma</span><span class="pipeline-stage-desc">Repositorio y paquetes firmados en la máquina de construcción</span></li>
+                <li><span class="pipeline-stage-name">Publicación</span><span class="pipeline-stage-desc">Subida automática al VPS, que actúa como espejo</span></li>
               </ol>
             </div>
           </div>
@@ -2568,60 +718,21 @@ a.text-link:hover {
 
         <div class="projects-grid">
 
-          <!-- RUNITCTL -->
-          <article class="project-card">
-            <header class="project-card-header">
-              <h3 class="project-card-title">runitctl</h3>
-              <p class="project-card-subtitle">
-                Gestor de servicios runit con interfaz tipo systemctl
-              </p>
-            </header>
-
-            <div class="project-card-body">
-              <p>
-                Desarrollé runitctl para ofrecer una experiencia de gestión de servicios 
-                más cómoda y familiar para usuarios acostumbrados a herramientas como systemctl.
-              </p>
-              <p>
-                Permite listar, habilitar, deshabilitar, iniciar, detener y reiniciar 
-                servicios runit desde una interfaz inspirada en systemctl.
-              </p>
-            </div>
-
-            <ul class="tags tags-small" role="list" aria-label="Tecnologías">
-              <li class="tag">Bash</li>
-              <li class="tag">runit</li>
-              <li class="tag">Services</li>
-              <li class="tag">CLI</li>
-            </ul>
-
-            <div class="project-card-footer">
-              <a 
-                href="#" 
-                class="btn btn-text"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ver en GitHub
-                <span aria-hidden="true">→</span>
-              </a>
-            </div>
-          </article>
 
           <!-- CUERDOS REPO MANAGER -->
           <article class="project-card">
             <header class="project-card-header">
               <h3 class="project-card-title">CuerdOS Repo Manager</h3>
               <p class="project-card-subtitle">
-                Gestor de repositorios XBPS (herramienta interna)
+                Despliegue del repositorio en el servidor (herramienta interna)
               </p>
             </header>
 
             <div class="project-card-body">
               <p>
-                Herramienta interna desarrollada para gestionar el repositorio de CuerdOS Void.
-                Recibe los paquetes generados por el pipeline, estructura el repositorio,
-                reconstruye sus índices y facilita su validación y promoción.
+                Con el nuevo pipeline pasó de ser un gestor completo a un script mínimo a propósito: 
+                en main solo recibe el repositorio ya construido y firmado y lo mueve al directorio 
+                publicado en internet. Menos piezas que mantener y menos superficie expuesta.
               </p>
               <p>
                 No es software público actualmente.
@@ -2658,8 +769,16 @@ a.text-link:hover {
     </section>
 
     <!-- ======================================== -->
-    <!-- STACK TÉCNICO                             -->
+    <!-- GITHUB Y STACK TÉCNICO                             -->
     <!-- ======================================== -->
+    <section id="github" class="section-github">
+      <div class="container">
+        <h2 class="github-title">CuerdOS en GitHub</h2>
+        <p>Los repositorios públicos del proyecto, con la distribución y sus herramientas, están en la organización CuerdOS-Project.</p>
+        <a href="https://github.com/CuerdOS-Project" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Ver CuerdOS-Project en GitHub</a>
+      </div>
+    </section>
+
     <section id="stack" class="section-stack">
       <div class="container">
 
@@ -2773,21 +892,11 @@ a.text-link:hover {
           ¿Interesado en colaborar o hablar sobre sistemas Linux?
         </p>
 
+        <a class="contact-mail" href="mailto:pgutalb@gmail.com">pgutalb@gmail.com</a>
+
         <!-- Enlaces de contacto -->
         <div class="contact-links">
           
-          <!-- Email -->
-          <a 
-            href="mailto:pgutalb@gmail.com" 
-            class="contact-link"
-            aria-label="Enviar email"
-          >
-            <span class="contact-link-icon" aria-hidden="true">
-              <img src="images/mail.svg" alt="" width="18" height="18">
-            </span>
-            <span class="contact-link-text">Email</span>
-          </a>
-
           <!-- GitHub -->
           <a 
             href="https://github.com/vault6kZ" 
